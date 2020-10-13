@@ -150,4 +150,29 @@ describe('create both recipe steps collection', () => {
     expect(result.currentSteps.map((step) => step.step_number)).toEqual([1,2]);
 
   })
+
+   test('Step numbers are renumbered from 1 on save', async () => {
+    // Given
+      const newSteps = [
+      {
+        recipe_step_id: 11,
+        recipe_id: 1,
+        step_number: 2,
+        step_text: 'step one',
+      },
+      {
+        recipe_step_id: null,
+        recipe_id: 1,
+        step_number: 3,
+        step_text: 'new step two',
+      },
+    ];
+
+    // When
+    const result = await updateRecipeSteps(1, newSteps);
+
+    // Then
+    expect(result.currentSteps.map((step) => step.step_number)).toEqual([1,2]);
+
+  })
 });
