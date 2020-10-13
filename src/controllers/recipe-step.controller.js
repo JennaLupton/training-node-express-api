@@ -29,9 +29,7 @@ const updateRecipeSteps = async (recipeId, currentSteps) => {
 
   for (let i = 0; i < currentSteps.length; i++) {
     const step = currentSteps[i];
-    if (i !== 0) {
-      step.step_number = currentSteps[i - 1].step_number + 1;
-    }
+    step.step_number = i + 1;
     updatedSteps.push(step);
   }
 
