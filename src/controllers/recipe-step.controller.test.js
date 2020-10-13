@@ -125,4 +125,29 @@ describe('create both recipe steps collection', () => {
     expect(deleteRecipeStep.mock.calls.length).toEqual(2);
     expect(createRecipeStep.mock.calls.length).toEqual(2);
   });
+
+  test('Step numbers are made sequential on save', async () => {
+    // Given
+      const newSteps = [
+      {
+        recipe_step_id: 11,
+        recipe_id: 1,
+        step_number: 1,
+        step_text: 'step one',
+      },
+      {
+        recipe_step_id: null,
+        recipe_id: 1,
+        step_number: 3,
+        step_text: 'new step two',
+      },
+    ];
+
+    // When
+    const result = await updateRecipeSteps(1, newSteps);
+
+    // Then
+    expect(result.currentSteps.map((step) => step.step_number)).toEqual([1,2]);
+
+  })
 });
