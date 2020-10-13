@@ -21,11 +21,11 @@ const updateRecipeStep = async (id, recipeStep) => {
 // Steps that no longer exist are deleted, existing ones are upadted and new ones created
 // TODO: Renumber recipe steps upon update
 const updateRecipeSteps = async (recipeId, currentSteps) => {
-  const deletedSteps = (await recipeStepConnector.getRecipeSteps(recipeId)).filter(
+  const stepsToDelete = (await recipeStepConnector.getRecipeSteps(recipeId)).filter(
     (step) => !currentSteps.some((item) => item.recipe_step_id === step.recipe_step_id)
   );
 
-  const promises = deletedSteps.map((step) =>
+  const promises = stepsToDelete.map((step) =>
     recipeStepConnector.deleteRecipeStep(step.recipe_step_id)
   );
 
