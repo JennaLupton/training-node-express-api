@@ -19,12 +19,12 @@ const updateRecipeStep = async (id, recipeStep) => {
 
 // Updates the current recipe steps using the supplied array
 // Steps that no longer exist are deleted, existing ones are updated and new ones created
-const updateRecipeSteps = async (recipeId, currentSteps) => {
+const updateRecipeSteps = async (recipeId, submittedSteps) => {
   const stepsToDelete = (await recipeStepConnector.getRecipeSteps(recipeId)).filter(
-    (step) => !currentSteps.some((item) => item.recipe_step_id === step.recipe_step_id)
+    (step) => !submittedSteps.some((item) => item.recipe_step_id === step.recipe_step_id)
   );
 
-  const updatedSteps = currentSteps.map((step, index) =>
+  const updatedSteps = submittedSteps.map((step, index) =>
     Object.assign(step, {step_number: index + 1}));
 
   const promises = stepsToDelete.map((step) =>
@@ -41,7 +41,7 @@ const updateRecipeSteps = async (recipeId, currentSteps) => {
 
   try {
     const changes = (await Promise.all(promises)).reduce((prev, curr) => prev + curr.changes, 0);
-    return { changes, currentSteps };
+    return { changes, currentSteps: submittedSteps };
   } catch (e) {
       return { error: e};
     }
