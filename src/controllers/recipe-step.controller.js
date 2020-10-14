@@ -39,8 +39,12 @@ const updateRecipeSteps = async (recipeId, currentSteps) => {
     }
   });
 
-  const changes = (await Promise.all(promises)).reduce((prev, curr) => prev + curr.changes, 0);
-  return { changes, currentSteps };
+  try {
+    const changes = (await Promise.all(promises)).reduce((prev, curr) => prev + curr.changes, 0);
+    return { changes, currentSteps };
+  } catch (e) {
+      return { error: e};
+    }
 };
 
 module.exports = {
