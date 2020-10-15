@@ -54,6 +54,7 @@ describe('update recipe steps collection', () => {
     expect(createRecipeStep.mock.calls.length).toEqual(1);
   });
 
+  // Test for updating both recipe steps
   test('The correct number of changes is returned', async () => {
     const result = await updateRecipeSteps(1, [
       {
@@ -76,6 +77,17 @@ describe('update recipe steps collection', () => {
     expect(createRecipeStep.mock.calls.length).toEqual(0);
   });
 
+  // Test for deleting both recipe steps
+  test('The correct number of changes is returned', async () => {
+    const result = await updateRecipeSteps(1, []);
+    expect(result.changes).toEqual(2);
+    expect(getRecipeSteps.mock.calls.length).toEqual(1);
+    expect(updateRecipeStep.mock.calls.length).toEqual(0);
+    expect(deleteRecipeStep.mock.calls.length).toEqual(2);
+    expect(createRecipeStep.mock.calls.length).toEqual(0);
+  });
+
+  // Test for deleting both recipe steps and replacing with null records
   test('The correct number of changes is returned', async () => {
     const result = await updateRecipeSteps(1, [
       {
@@ -98,6 +110,7 @@ describe('update recipe steps collection', () => {
     expect(createRecipeStep.mock.calls.length).toEqual(2);
   });
 
+  // Test for creating two new recipe steps
   test('The correct number of changes is returned', async () => {
     const result = await updateRecipeSteps(1, [
       {
