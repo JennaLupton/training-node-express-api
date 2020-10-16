@@ -15,28 +15,25 @@ const deleteStepIngredient = async (id) => {
 
 const getStepIngredients = async (stepId) => {
   const sql = `SELECT steps_ingredients_link.recipe_step_id, steps_ingredients_link.recipe_ingredient_id, recipe_ingredients.name
-               FROM steps_ingredients_link
-               INNER JOIN recipe_ingredients ON steps_ingredients_link.recipe_ingredient_id = recipe_ingredients.recipe_ingredient_id 
-               WHERE recipe_step_id = $1
-               ORDER BY recipe_ingredient_id`;
+               FROM recipe_ingredients
+               INNER JOIN steps_ingredients_link ON steps_ingredients_link.recipe_ingredient_id = recipe_ingredients.recipe_ingredient_id 
+               WHERE steps_ingredients_link.recipe_step_id = $1
+               ORDER BY steps_ingredients_link.recipe_ingredient_id`;
   return Connection.all(sql, [stepId]);
 };
 
 const getStepIngredient = async (id) => {
   const sql = `SELECT steps_ingredients_link.recipe_step_id, steps_ingredients_link.recipe_ingredient_id, recipe_ingredients.name
-               FROM steps_ingredients_link
-               INNER JOIN recipe_ingredients ON steps_ingredients_link.recipe_ingredient_id = recipe_ingredients.recipe_ingredient_id
-               WHERE recipe_ingredient_id = $1
-               ORDER BY recipe_ingredient_id`;
+               FROM recipe_ingredients
+               INNER JOIN steps_ingredients_link ON steps_ingredients_link.recipe_ingredient_id = recipe_ingredients.recipe_ingredient_id
+               WHERE steps_ingredients_link.recipe_ingredient_id = $1
+               ORDER BY steps_ingredients_link.recipe_ingredient_id`;
   return Connection.get(sql, [id]);
 };
-
-// Need to add an updateStepIngredient function
 
 module.exports = {
   createStepIngredient,
   deleteStepIngredient,
   getStepIngredients,
   getStepIngredient,
-  // updateStepIngredient
 };
