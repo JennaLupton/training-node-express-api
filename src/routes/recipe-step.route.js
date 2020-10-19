@@ -1,5 +1,6 @@
 const express = require('express');
 const recipeStepController = require('../controllers/recipe-step.controller');
+const stepIngredientsRouter = require('./step-ingredient.route');
 const { CustomException } = require('../utils/errors');
 
 const router = express.Router({ mergeParams: true });
@@ -48,5 +49,7 @@ router.patch('/', async (req, res, next) => {
     next(new CustomException('Unable to create recipe step', err));
   }
 });
+
+router.use('/:recipeStepId/step-ingredients', stepIngredientsRouter);
 
 module.exports = router;

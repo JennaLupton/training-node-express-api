@@ -1,5 +1,6 @@
 const express = require('express');
 const recipeStepsRouter = require('./recipe-step.route');
+const recipeIngredientsRouter = require('./recipe-ingredient.route');
 const recipeController = require('../controllers/recipe.controller');
 const { CustomException, NotFoundException } = require('../utils/errors');
 
@@ -48,5 +49,6 @@ router.put('/:id', async (req, res) => {
 });
 
 router.use('/:recipeId/recipe-steps', recipeStepsRouter);
+router.use('/:recipeId/recipe-ingredients', recipeIngredientsRouter);
 
 module.exports = router;

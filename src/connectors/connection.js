@@ -27,6 +27,9 @@ class Connection {
     try {
       await Connection.run('DROP TABLE IF EXISTS recipes', []);
       await Connection.run('DROP TABLE IF EXISTS recipe_steps', []);
+      await Connection.run('DROP TABLE IF EXISTS recipe_ingredients', []);
+      await Connection.run('DROP TABLE IF EXISTS step_ingredients', []);
+
       const sqlCreateRecipes = `CREATE TABLE IF NOT EXISTS recipes (
         recipe_id INTEGER PRIMARY KEY,
         title VARCHAR(50) NOT NULL,
@@ -34,6 +37,7 @@ class Connection {
         preparation_time INT
       );`;
       await Connection.run(sqlCreateRecipes, []);
+
       const sqlCreateSteps = `CREATE TABLE IF NOT EXISTS recipe_steps (
         recipe_step_id INTEGER PRIMARY KEY,
         recipe_id INTEGER NOT NULL,
@@ -43,6 +47,27 @@ class Connection {
           REFERENCES recipes (recipe_id)
       );`;
       await Connection.run(sqlCreateSteps, []);
+
+      const sqlCreateIngredients = `CREATE TABLE IF NOT EXISTS recipe_ingredients (
+        recipe_ingredient_id INTEGER PRIMARY KEY,
+        ingredient_id INTEGER NOT NULL,
+        recipe_id INTEGER NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        FOREIGN KEY (recipe_id)
+          REFERENCES recipes (recipe_id)
+      );`;
+      await Connection.run(sqlCreateIngredients, []);
+
+      const sqlCreateStepIngredients = `CREATE TABLE IF NOT EXISTS step_ingredients (
+        recipe_step_id INTEGER NOT NULL,
+        recipe_ingredient_id INTEGER NOT NULL,
+        FOREIGN KEY (recipe_step_id)
+          REFERENCES recipe_steps (recipe_step_id)
+        FOREIGN KEY (recipe_ingredient_id)
+          REFERENCES recipe_ingredients (recipe_ingredient_id)
+        PRIMARY KEY (recipe_step_id, recipe_ingredient_id)
+      );`;
+      await Connection.run(sqlCreateStepIngredients, []);
     } catch (err) {
       winston.error(err.message);
       throw err;
