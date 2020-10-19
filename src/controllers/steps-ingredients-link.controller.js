@@ -8,7 +8,8 @@ const deleteStepIngredient = async (id) => stepIngredientConnector.deleteStepIng
 const getStepIngredients = async (stepId) => {
     return stepIngredientConnector.getStepIngredients(stepId)};
 
-const getStepIngredient = async (id) => stepIngredientConnector.getStepIngredient(id);
+const getStepIngredient = async (stepId, id) => {
+    return stepIngredientConnector.getStepIngredient(stepId, id)};
 
 // Updates the current step ingredients using the supplied array
 // Ingredients that no longer exist are deleted and new ones are created

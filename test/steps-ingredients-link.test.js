@@ -39,7 +39,12 @@ describe('HTTP requests to /steps-ingredients-link', () => {
     });
 
     beforeEach(async () => {
-        await resetDb();
+        try {
+            await resetDb();
+        }   catch (e) { 
+                console.log(e.message);
+                throw(e);
+            }
     });
 
     test('A valid step ingredient can be saved and then retrieved', async () => {
@@ -62,7 +67,7 @@ describe('HTTP requests to /steps-ingredients-link', () => {
             .get(`/recipes/1/recipe-steps/2/step-ingredients/${lastID}/`)
             .send()
             .set('Accept', 'application/json')
-            .expect('Content-Type', /json/);
+            // .expect('Content-Type', /json/);
         
         expect(getResponse.status).toEqual(200);
         expect(getResponse.body.recipe_ingredient_id).toEqual(1);

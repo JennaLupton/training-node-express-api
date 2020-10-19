@@ -22,13 +22,13 @@ const getStepIngredients = async (stepId) => {
   return Connection.all(sql, [stepId]);
 };
 
-const getStepIngredient = async (id) => {
+const getStepIngredient = async (stepId, id) => {
   const sql = `SELECT steps_ingredients_link.recipe_step_id, steps_ingredients_link.recipe_ingredient_id, recipe_ingredients.name
                FROM recipe_ingredients
                INNER JOIN steps_ingredients_link ON steps_ingredients_link.recipe_ingredient_id = recipe_ingredients.recipe_ingredient_id
-               WHERE steps_ingredients_link.recipe_ingredient_id = $1
+               WHERE steps_ingredients_link.recipe_step_id = $1 AND steps_ingredients_link.recipe_ingredient_id = $2
                ORDER BY steps_ingredients_link.recipe_ingredient_id`;
-  return Connection.get(sql, [id]);
+  return Connection.get(sql, [stepId, id]);
 };
 
 module.exports = {

@@ -1,5 +1,6 @@
 const express = require('express');
 const stepIngredientController = require('../controllers/steps-ingredients-link.controller');
+const { NotFoundException } = require('../utils/errors');
 
 const router = express.Router({ mergeParams: true });
 
@@ -25,9 +26,14 @@ router.get('/', async (req, res) => {
 });
 
 // Gets an individual step ingredient according to the ID supplied in the URL
-router.get('/:id', async (req, res) => {
-  const result = await stepIngredientController.getStepIngredient(req.params.id);
-  res.send(result);
+router.get('/:id', async (req, res, next) => {
+  try {
+    const result = await stepIngredientController.getStepIngredient(
+      req.params.stepId, req.params.id);
+    res.send(result);
+  } catch(e) {
+      next(e);
+    }
 });
 
 module.exports = router;
